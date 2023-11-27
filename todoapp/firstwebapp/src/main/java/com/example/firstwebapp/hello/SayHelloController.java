@@ -32,7 +32,7 @@ public class SayHelloController {
     // sayHello.jsp
     //  Ruta donde se crean las vistas
     //  src/main/resources/META-INF/resources/WEB-INF/jsp
-    @RequestMapping("say-hello-world-jsp")
+    @RequestMapping("say-hello-jsp")
     public String sayHelloJsp() {
         return "sayHello";
     }

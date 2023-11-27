@@ -8,6 +8,8 @@
     <title>My first JSP page body</title>
 </head>
 <body>
+<h1>Heading 1</h1>
+<h2>Heading 2</h2>
     My first page with body
 </body>
 </html>
