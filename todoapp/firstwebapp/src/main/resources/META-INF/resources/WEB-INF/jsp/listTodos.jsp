@@ -9,7 +9,7 @@
 </head>
 <body>
 <div>
-    Welcome to demo of Spring Boot 1
+    Welcome ${name}
     <div>Your Todos are ${todos}</div>
 </div>
 </body>

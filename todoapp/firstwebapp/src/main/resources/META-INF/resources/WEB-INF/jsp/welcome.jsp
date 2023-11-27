@@ -11,7 +11,8 @@
 <div>
     Welcome to demo of Spring Boot
     <div>Your Name: ${name}</div>
-    <div>Your password: ${password}</div>
+<%--    <div>Your password: ${password}</div>--%>
+    <div><a href="list-todos">Manage</a> your todos</div>
 </div>
 </body>
 </html>

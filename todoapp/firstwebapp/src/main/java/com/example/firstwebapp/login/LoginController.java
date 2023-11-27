@@ -8,8 +8,12 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 @Controller
+@SessionAttributes("name") // Con SessionAttributes especificamos el atributo que queremos que persista en la session
+// del usuario, en este caso tendríamos que especificar esta anotación en todos los controladores donde ocupemos el
+// valor, el valor que es importado es el valor que colocamos en el modelo
 public class LoginController {
     private Logger logger = LoggerFactory.getLogger(getClass());
 
