@@ -15,4 +15,28 @@ public class SayHelloController {
     public String sayHello() {
         return "Hello World!";
     }
+
+    @RequestMapping("say-hello-html")
+    @ResponseBody
+    public StringBuffer sayHelloHtml() {
+        StringBuffer sb = new StringBuffer();
+        sb.append("<html>");
+        sb.append("<head>");
+        sb.append("</head>");
+        sb.append("</html>");
+
+
+        return sb;
+    }
+
+    // sayHello.jsp
+    //  Ruta donde se crean las vistas
+    //  src/main/resources/META-INF/resources/WEB-INF/jsp
+    @RequestMapping("say-hello-world-jsp")
+    public String sayHelloJsp() {
+        return "sayHello";
+    }
+
+
+
 }
