@@ -25,7 +25,7 @@ public class TodoService {
                 1,
                 "in28minutes",
                 "Learn Full Stack Development", LocalDate.now().plusYears(3),
-                false));
+                true));
     }
 
     public List<Todo> findByUsername(String username) {
