@@ -10,11 +10,9 @@
     <title>Welcome Page</title>
 </head>
 <body>
-<div>
-    <div>Welcome ${name}</div>
-    <hr>
+<div class="container">
     <h1>Your Todos are</h1>
-    <table>
+    <table class="table table-primary">
         <thead>
         <tr>
             <th>id</th>
