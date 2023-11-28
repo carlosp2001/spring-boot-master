@@ -28,15 +28,18 @@ public class TodoController {
         return "listTodos";
     }
 
-    @RequestMapping(value="add-todo", method = RequestMethod.GET)
-    public String showNewTodoPage() {
+    @RequestMapping(value = "add-todo", method = RequestMethod.GET)
+    public String showNewTodoPage(ModelMap model) {
+        String username = (String) model.get("name");
+        Todo todo = new Todo(0, username, "", LocalDate.now().plusYears(1), false);
+        model.put("todo", todo);
         return "todo";
     }
 
-    @RequestMapping(value="add-todo", method = RequestMethod.POST)
-    public String addNewTodoPage(@RequestParam String description, ModelMap model) {
-        String username = (String)model.get("name");
-        todoService.addTodo(username, description, LocalDate.now().plusYears(1), false);
+    @RequestMapping(value = "add-todo", method = RequestMethod.POST)
+    public String addNewTodoPage(ModelMap model, Todo todo) {
+        String username = (String) model.get("name");
+        todoService.addTodo(username, todo.getDescription(), LocalDate.now().plusYears(1), false);
 
 
         // En este caso debemos hacer redireccionamiento porque queremos popular los datos
