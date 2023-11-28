@@ -10,19 +10,21 @@ import java.util.List;
 public class TodoService {
     private static List<Todo> todos = new ArrayList<>();
 
+    private static int todosCount = 0;
+
     static {
         todos.add(new Todo(
-                1,
+                ++todosCount,
                 "in28minutes",
                 "Learn AWS", LocalDate.now().plusYears(1),
                 false));
         todos.add(new Todo(
-                1,
+                ++todosCount,
                 "in28minutes",
                 "Learn DevOps", LocalDate.now().plusYears(2),
                 false));
         todos.add(new Todo(
-                1,
+                ++todosCount,
                 "in28minutes",
                 "Learn Full Stack Development", LocalDate.now().plusYears(3),
                 true));
@@ -30,5 +32,10 @@ public class TodoService {
 
     public List<Todo> findByUsername(String username) {
         return todos;
+    }
+
+    public void addTodo(String username, String description, LocalDate targetDate, boolean done) {
+        Todo todo = new Todo(++todosCount, username, description, targetDate, done);
+        todos.add(todo);
     }
 }
