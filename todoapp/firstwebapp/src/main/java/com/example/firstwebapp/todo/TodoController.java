@@ -29,7 +29,7 @@ public class TodoController {
         return "listTodos";
     }
 
-    // Método para mostrar la página y crear un nuevo todo
+    // Método para mostrar la página para crear un nuevo todo
     @RequestMapping(value = "add-todo", method = RequestMethod.GET)
     public String showNewTodoPage(ModelMap model) {
         String username = (String) model.get("name");
@@ -46,8 +46,7 @@ public class TodoController {
         }
 
         String username = (String) model.get("name");
-        todoService.addTodo(username, todo.getDescription(), LocalDate.now().plusYears(1), false);
-
+        todoService.addTodo(username, todo.getDescription(), todo.getTargetDate(), false);
 
         // En este caso debemos hacer redireccionamiento porque queremos popular los datos
         // no solo mostrar las vistas
