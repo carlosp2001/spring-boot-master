@@ -1,6 +1,8 @@
 package com.example.firstwebapp.todo;
 
 import jakarta.validation.Valid;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -24,9 +26,18 @@ public class TodoController {
     // Método para mostrar la lista de todos
     @RequestMapping("list-todos")
     public String listAllTodos(ModelMap model) {
-        List<Todo> todos = todoService.findByUsername("in28minutes");
+        // Cuando querramos usar el username o cualquier información del usuario debemos obtener desde el contexto de
+        // Spring Security
+        String username = getName(model);
+        List<Todo> todos = todoService.findByUsername(username);
         model.addAttribute("todos", todos);
         return "listTodos";
+    }
+
+    private static String getName(ModelMap model) {
+        Authentication authentication =
+                SecurityContextHolder.getContext().getAuthentication();
+        return authentication.getName();
     }
 
     // Método para mostrar la página para crear un nuevo todo
