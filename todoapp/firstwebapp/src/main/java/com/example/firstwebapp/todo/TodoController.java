@@ -21,8 +21,7 @@ public class TodoController {
         this.todoService = todoService;
     }
 
-
-    // /list-todos
+    // Método para mostrar la lista de todos
     @RequestMapping("list-todos")
     public String listAllTodos(ModelMap model) {
         List<Todo> todos = todoService.findByUsername("in28minutes");
@@ -30,6 +29,7 @@ public class TodoController {
         return "listTodos";
     }
 
+    // Método para mostrar la página y crear un nuevo todo
     @RequestMapping(value = "add-todo", method = RequestMethod.GET)
     public String showNewTodoPage(ModelMap model) {
         String username = (String) model.get("name");
@@ -38,6 +38,7 @@ public class TodoController {
         return "todo";
     }
 
+    // Método para agregar un nuevo todo
     @RequestMapping(value = "add-todo", method = RequestMethod.POST)
     public String addNewTodoPage(ModelMap model, @Valid Todo todo, BindingResult result) {
         if (result.hasErrors()) {
@@ -53,10 +54,32 @@ public class TodoController {
         return "redirect:list-todos";
     }
 
+    // Método para eliminar un todo
     @RequestMapping("delete-todo")
     public String deleteTodo(@RequestParam int id) {
         // Delete todo
         todoService.deleteById(id);
+        return "redirect:list-todos";
+    }
+
+    // Método para mostrar la página de actualización del todo
+    @RequestMapping(value = "update-todo", method = RequestMethod.GET)
+    public String showUpdateTodoPage(@RequestParam int id, ModelMap model) {
+        Todo todo = todoService.findById(id);
+        model.addAttribute("todo", todo);
+        return "todo";
+    }
+
+    // Método para actualizar el todo
+    @RequestMapping(value = "update-todo", method = RequestMethod.POST)
+    public String updateTodo(ModelMap model, @Valid Todo todo, BindingResult result) {
+        if (result.hasErrors()) {
+            return "todo";
+        }
+
+        String username = (String) model.get("name");
+        todoService.updateTodo(todo);
+
         return "redirect:list-todos";
     }
 }
