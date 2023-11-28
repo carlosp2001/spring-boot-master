@@ -1,5 +1,7 @@
 package com.example.firstwebapp.todo;
 
+import jakarta.validation.constraints.Size;
+
 import java.time.LocalDate;
 // Vamos a almacenar estos datos en una base de datos MySQL
 // Primero se creará una lista estática de todos
@@ -8,6 +10,7 @@ import java.time.LocalDate;
 public class Todo {
     private int id;
     private String username;
+    @Size(min = 10, message = "Enter at least 10 characters")
     private String description;
     private LocalDate targetDate;
     private boolean done;
