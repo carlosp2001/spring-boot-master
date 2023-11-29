@@ -1,9 +1,7 @@
 package com.example.firstrestapi.survey;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
@@ -63,5 +61,16 @@ public class SurveyResource {
         if (question == null)
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         return question;
+    }
+
+    /**
+     * Ruta para crear una nueva pregunta en una encuesta
+     * @param surveyId
+     * @param question
+     */
+    @RequestMapping(value = "/surveys/{surveyId}/questions", method = RequestMethod.POST)
+    public void addNewSurveyQuestion(@PathVariable String surveyId, @RequestBody Question question) {
+        surveyService.addNewSurveyQuestion(surveyId, question);
+        
     }
 }
