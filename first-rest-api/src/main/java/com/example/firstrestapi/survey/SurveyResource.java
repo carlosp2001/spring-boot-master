@@ -4,7 +4,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -17,6 +19,7 @@ public class SurveyResource {
 
     /**
      * Ruta para obtener todas encuestas
+     *
      * @return
      */
     @RequestMapping("/surveys")
@@ -26,6 +29,7 @@ public class SurveyResource {
 
     /**
      * Ruta para obtener la información de una encuesta en específico
+     *
      * @param surveyId
      * @return
      */
@@ -39,6 +43,7 @@ public class SurveyResource {
 
     /**
      * Ruta para obtener todas las preguntas de una encuesta en específico
+     *
      * @param surveyId
      * @return
      */
@@ -52,6 +57,7 @@ public class SurveyResource {
 
     /**
      * Ruta para obtener una pregunta específica de una encuesta
+     *
      * @param surveyId
      * @param questionId
      * @return
@@ -66,13 +72,35 @@ public class SurveyResource {
 
     /**
      * Ruta para crear una nueva pregunta en una encuesta
+     *
      * @param surveyId
      * @param question
      */
     @RequestMapping(value = "/surveys/{surveyId}/questions", method = RequestMethod.POST)
     public ResponseEntity<Object> addNewSurveyQuestion(@PathVariable String surveyId, @RequestBody Question question) {
-        surveyService.addNewSurveyQuestion(surveyId, question);
+        String questionId = surveyService.addNewSurveyQuestion(surveyId, question);
 
-        return ResponseEntity.created(null).build();
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{questionId}")
+                .buildAndExpand(questionId)
+                .toUri();
+        return ResponseEntity.created(location).build();
+    }
+
+    /**
+     * Ruta para obtener una pregunta específica de una encuesta
+     *
+     * @param surveyId
+     * @param questionId
+     * @return
+     */
+    @RequestMapping(value = "/surveys/{surveyId}/questions/{questionId}", method = RequestMethod.DELETE)
+    public ResponseEntity<Object> deleteSpecificSurveyQuestion(@PathVariable String surveyId, @PathVariable String questionId) {
+        String surveyIdRemoved = surveyService.deleteSurveyQuestion(surveyId, questionId);
+        if (surveyIdRemoved == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+        return ResponseEntity.noContent().build();
     }
 }
