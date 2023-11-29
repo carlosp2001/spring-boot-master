@@ -14,13 +14,14 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import java.time.LocalDate;
 import java.util.List;
 
-//@Controller
+@Controller
 @SessionAttributes("name")
-public class TodoController {
-    private TodoService todoService;
+public class TodoControllerJpa {
 
-    public TodoController(TodoService todoService) {
-        this.todoService = todoService;
+    private TodoRepository todoRepository;
+
+    public TodoControllerJpa(TodoService todoService, TodoRepository todoRepository) {
+        this.todoRepository = todoRepository;
     }
 
     // Método para mostrar la lista de todos
@@ -29,7 +30,8 @@ public class TodoController {
         // Cuando querramos usar el username o cualquier información del usuario debemos obtener desde el contexto de
         // Spring Security
         String username = getName(model);
-        List<Todo> todos = todoService.findByUsername(username);
+
+        List<Todo> todos = todoRepository.findByUsername(username);
         model.addAttribute("todos", todos);
         return "listTodos";
     }
@@ -51,31 +53,42 @@ public class TodoController {
 
     // Método para agregar un nuevo todo
     @RequestMapping(value = "add-todo", method = RequestMethod.POST)
-    public String addNewTodoPage(ModelMap model, @Valid Todo todo, BindingResult result) {
+    public String addNewTodo(ModelMap model, @Valid Todo todo, BindingResult result) {
         if (result.hasErrors()) {
             return "todo";
         }
 
-        String username = (String) model.get("name");
-        todoService.addTodo(username, todo.getDescription(), todo.getTargetDate(), false);
+        String username = getLoggedInUsername();
+        todo.setUsername(username);
+        todoRepository.save(todo);
 
-        // En este caso debemos hacer redireccionamiento porque queremos popular los datos
-        // no solo mostrar las vistas
+//        todoService.addTodo(username, todo.getDescription(), todo.getTargetDate(), false);
+
+
         return "redirect:list-todos";
+    }
+
+    private String getLoggedInUsername() {
+        Authentication authentication =
+                SecurityContextHolder.getContext().getAuthentication();
+        return authentication.getName();
+
     }
 
     // Método para eliminar un todo
     @RequestMapping("delete-todo")
     public String deleteTodo(@RequestParam int id) {
         // Delete todo
-        todoService.deleteById(id);
+        todoRepository.deleteById(id);
+//        todoService.deleteById(id);
         return "redirect:list-todos";
     }
 
     // Método para mostrar la página de actualización del todo
     @RequestMapping(value = "update-todo", method = RequestMethod.GET)
     public String showUpdateTodoPage(@RequestParam int id, ModelMap model) {
-        Todo todo = todoService.findById(id);
+//        Todo todo = todoService.findById(id);
+        Todo todo = todoRepository.findById(id).get();
         model.addAttribute("todo", todo);
         return "todo";
     }
@@ -87,8 +100,9 @@ public class TodoController {
             return "todo";
         }
 
-        String username = (String) model.get("name");
-        todoService.updateTodo(todo);
+        String username = getLoggedInUsername();
+        todo.setUsername(username);
+        todoRepository.save(todo);
 
         return "redirect:list-todos";
     }

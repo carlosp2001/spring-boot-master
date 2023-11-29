@@ -14,6 +14,11 @@ import java.time.LocalDate;
 //@Entity(name = "TODOABC") // Podemos especificar el nombre de la tabla con una anotación
 @Entity()
 public class Todo {
+
+    public Todo() {
+
+    }
+
     @Id
     @GeneratedValue
     private int id;
