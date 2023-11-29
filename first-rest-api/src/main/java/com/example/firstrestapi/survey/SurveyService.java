@@ -10,6 +10,9 @@ import java.util.function.Predicate;
 
 @Service
 public class SurveyService {
+    /**
+     * Lista estática que almacena los datos de las encuestas
+     */
     private static List<Survey> surveys = new ArrayList<>();
 
     static {
@@ -32,15 +35,36 @@ public class SurveyService {
         surveys.add(survey);
     }
 
-    public List<Survey> retrieAllSurveys() {
+    public List<Survey> retrieveAllSurveys() {
         return surveys;
     }
 
+    /**
+     * Método para buscar y obtener las encuestas por medio de un id
+     *
+     * @param surveyId
+     * @return
+     */
     public Survey retrieveSurveyById(String surveyId) {
         Predicate<? super Survey> predicate = survey -> survey.getId().equalsIgnoreCase(surveyId);
         Optional<Survey> optionalSurvey = surveys.stream().filter(predicate).findFirst();
         if (optionalSurvey.isEmpty()) return null;
         return optionalSurvey.get();
 
+    }
+
+    public List<Question> retrieveAllSurveyQuestions(String surveyId) {
+        Survey survey = retrieveSurveyById(surveyId);
+        if (survey == null) return null;
+        return survey.getQuestions();
+    }
+
+    public Question retrieveSpecificSurveyQuestion(String surveyId, String questionId) {
+        List<Question> surveyQuestions = retrieveAllSurveyQuestions(surveyId);
+        if (surveyQuestions == null) return null;
+        Optional<Question> optionalQuestion =
+                surveyQuestions.stream().filter(q -> q.getId().equalsIgnoreCase(questionId)).findFirst();
+        if (optionalQuestion.isEmpty()) return null;
+        return optionalQuestion.get();
     }
 }
