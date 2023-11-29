@@ -96,11 +96,20 @@ public class SurveyResource {
      * @return
      */
     @RequestMapping(value = "/surveys/{surveyId}/questions/{questionId}", method = RequestMethod.DELETE)
-    public ResponseEntity<Object> deleteSpecificSurveyQuestion(@PathVariable String surveyId, @PathVariable String questionId) {
+    public ResponseEntity<Object> deleteSurveyQuestion(@PathVariable String surveyId, @PathVariable String questionId) {
         String surveyIdRemoved = surveyService.deleteSurveyQuestion(surveyId, questionId);
         if (surveyIdRemoved == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
+        return ResponseEntity.noContent().build();
+    }
+
+    @RequestMapping(value = "/surveys/{surveyId}/questions/{questionId}", method = RequestMethod.PUT)
+    public ResponseEntity<Object> updateSurveyQuestion(@PathVariable String surveyId,
+                                                       @PathVariable String questionId,
+                                                       @RequestBody Question question) {
+        surveyService.updateSurveyQuestion(surveyId, questionId, question);
+
         return ResponseEntity.noContent().build();
     }
 }
