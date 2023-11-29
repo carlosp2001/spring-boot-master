@@ -1,5 +1,9 @@
 package com.example.firstwebapp.todo;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
@@ -7,8 +11,14 @@ import java.time.LocalDate;
 // Primero se creará una lista estática de todos
 // Después pasaremos a utilizar una base de datos real
 
+//@Entity(name = "TODOABC") // Podemos especificar el nombre de la tabla con una anotación
+@Entity()
 public class Todo {
+    @Id
+    @GeneratedValue
     private int id;
+
+//    @Column(name = "name") Especificar otro nombre al campo
     private String username;
     @Size(min = 10, message = "Enter at least 10 characters")
     private String description;
