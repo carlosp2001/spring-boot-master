@@ -2,6 +2,8 @@ package com.example.firstrestapi.survey;
 
 import org.springframework.stereotype.Service;
 
+import java.math.BigInteger;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -70,6 +72,12 @@ public class SurveyService {
 
     public void addNewSurveyQuestion(String surveyId, Question question) {
         List<Question> questions = retrieveAllSurveyQuestions(surveyId);
+        question.setId(generateRandomId());
         questions.add(question);
+    }
+
+    private static String generateRandomId() {
+        SecureRandom secureRandom = new SecureRandom();
+        return new BigInteger(32, secureRandom).toString();
     }
 }

@@ -1,6 +1,7 @@
 package com.example.firstrestapi.survey;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -69,8 +70,9 @@ public class SurveyResource {
      * @param question
      */
     @RequestMapping(value = "/surveys/{surveyId}/questions", method = RequestMethod.POST)
-    public void addNewSurveyQuestion(@PathVariable String surveyId, @RequestBody Question question) {
+    public ResponseEntity<Object> addNewSurveyQuestion(@PathVariable String surveyId, @RequestBody Question question) {
         surveyService.addNewSurveyQuestion(surveyId, question);
-        
+
+        return ResponseEntity.created(null).build();
     }
 }
