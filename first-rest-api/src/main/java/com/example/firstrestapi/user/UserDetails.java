@@ -17,8 +17,7 @@ public class UserDetails {
 
     }
 
-    public UserDetails(Long id, String name, String role) {
-        this.id = id;
+    public UserDetails(String name, String role) {
         this.name = name;
         this.role = role;
     }
@@ -45,5 +44,14 @@ public class UserDetails {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    @Override
+    public String toString() {
+        return "UserDetails{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", role='" + role + '\'' +
+                '}';
     }
 }
