@@ -6,7 +6,11 @@ import org.skyscreamer.jsonassert.JSONAssert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -115,4 +119,41 @@ public class SurveyResourceIT {
         assertTrue(responseEntity.getStatusCode().is2xxSuccessful());
         assertEquals(responseEntity.getHeaders().get("Content-Type").get(0), "application/json");
     }
+
+
+    @Test
+    void addNewSurveyQuestion_basicScenario() {
+        String requestBody = """
+                {
+                    "description": "Your Favorite Language",
+                    "options": [
+                        "Java",
+                        "Python",
+                        "JavaScript",
+                        "Haskell"
+                    ],
+                    "correctAnswer": "Java"
+                }
+                """;
+        // http://localhost:8080/surveys/Survey1/questions
+        // POST
+        // RequestBody
+        // Content-Type application/json
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Type", "application/json");
+
+        HttpEntity<String> httpEntity = new HttpEntity<String>(requestBody, headers);
+
+        ResponseEntity<String> responseEntity = template.exchange(GENERIC_QUESTIONS_URL, HttpMethod.POST, httpEntity, String.class);
+//        System.out.println(responseEntity.getHeaders());
+//        System.out.println(responseEntity.getBody());
+
+        // Asserts
+        // 201
+        // Location: http://localhost:8080/surveys/Survey1/questions/83829382
+        assertTrue(responseEntity.getStatusCode().is2xxSuccessful());
+
+        assertTrue(responseEntity.getHeaders().get("Location").get(0).contains("/surveys/Survey1/questions/"));
+    }
+
 }
