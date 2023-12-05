@@ -153,7 +153,15 @@ public class SurveyResourceIT {
         // Location: http://localhost:8080/surveys/Survey1/questions/83829382
         assertTrue(responseEntity.getStatusCode().is2xxSuccessful());
 
-        assertTrue(responseEntity.getHeaders().get("Location").get(0).contains("/surveys/Survey1/questions/"));
+        String locationHeader = responseEntity.getHeaders().get("Location").get(0);
+        assertTrue(locationHeader.contains("/surveys/Survey1/questions/"));
+
+        // Las pruebas unitarias no deben tener efectos secundarios es por eso que después de crear el registro se debe
+        // eliminar para evitar problemas con las demás pruebas
+
+        // DELETE Request
+        // locationHeader
+        template.delete(locationHeader);
     }
 
 }
