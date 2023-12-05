@@ -31,6 +31,8 @@ public class SurveyResourceIT {
 
     private static String SPECIFIC_QUESTION_URL = "/surveys/Survey1/questions/Question1";
 
+    private static String GENERIC_QUESTIONS_URL = "/surveys/Survey1/questions";
+
     String str = """
             {
                 "id": "Question1",
@@ -65,5 +67,52 @@ public class SurveyResourceIT {
 //        System.out.println(responseEntity.getBody());
 //        System.out.println(responseEntity.getHeaders());
 //        assertEquals(expectedResponse.trim(), responseEntity.getBody());
+    }
+
+    @Test
+    void retrieveAllSurveyQuestions_basicScenario() throws JSONException {
+        ResponseEntity<String> responseEntity = template.getForEntity(GENERIC_QUESTIONS_URL, String.class);
+        String expectedResponse = """
+                        [
+                            {
+                            "id": "Question1",
+                            "description": "Most Popular Cloud Platform Today",
+                            "options": [
+                            "AWS",
+                            "Azure",
+                            "Google Cloud",
+                            "Oracle Cloud"
+                            ],
+                            "correctAnswer": "AWS"
+                            },
+                            {
+                            "id": "Question2",
+                            "description": "Fastest Growing Cloud Platform",
+                            "options": [
+                            "AWS",
+                            "Azure",
+                            "Google Cloud",
+                            "Oracle Cloud"
+                            ],
+                            "correctAnswer": "Google Cloud"
+                            },
+                            {
+                            "id": "Question3",
+                            "description": "Most Popular DevOps Tool",
+                            "options": [
+                            "Kubernetes",
+                            "Docker",
+                            "Terraform",
+                            "Azure DevOps"
+                            ],
+                            "correctAnswer": "Kubernetes"
+                            }
+                      ]
+                """;
+
+        JSONAssert.assertEquals(expectedResponse, responseEntity.getBody(), false);
+
+        assertTrue(responseEntity.getStatusCode().is2xxSuccessful());
+        assertEquals(responseEntity.getHeaders().get("Content-Type").get(0), "application/json");
     }
 }
