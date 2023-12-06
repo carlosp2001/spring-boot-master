@@ -13,6 +13,6 @@ public class FP01Functional {
 
     private static void printAllNumbersInListFunctional(List<Integer> numbers) {
         // ¿Qué debemos hacer?
-        numbers.stream().forEach(FP01Functional::print);
+        numbers.stream().forEach(System.out::println); // Method reference
     }
 }
